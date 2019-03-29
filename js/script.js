@@ -5,12 +5,16 @@ $('#submit')[0].addEventListener('click', function() {
     var re = $('#re')[0].value.replace(/ /g, '').split(','); // Laver et array, re, som står for raw entries.
     var ec = [...new Set(re)].sort(function(a, b){return a-b}); // Laver et array, ec,  som står for entry categories.
 
+    var array = [42, 36, 34, 35, 34, 34, 35];
+    var ec = [...new Set(array)].sort(function(a, b){return a-b});
+
     var fec = [];
     for (var i = ec[0]; i < ec[ec.length - 1] + 1; i++) {
       fec.push(i);
     }
 
     ec = fec;
+    console.log(ec);
 
     function getOccs(value) {
       var count = 0;
