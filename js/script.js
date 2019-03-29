@@ -3,7 +3,11 @@ $('#submit')[0].addEventListener('click', function() {
   if (clicks < 1) {
     clicks++;
     var re = $('#re')[0].value.replace(/ /g, '').split(','); // Laver et array, re, som står for raw entries.
-    var ec = [...new Set(re)]; // Laver et array, ec,  som står for entry categories.
+    var ec = [...new Set(re)].sort(function(a, b){return a-b}); // Laver et array, ec,  som står for entry categories.
+
+    for (var i = ec[0]; i < ec[ec.length - 1]; i++) {
+        console.log('e');
+    }
 
     function getOccs(value) {
       var count = 0;
@@ -72,5 +76,7 @@ $('#submit')[0].addEventListener('click', function() {
     '</tr>');
 
     $('#avg')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
+
+
   }
 });
