@@ -14,3 +14,7 @@ td, th {
 body {
   font-family: arial, sans-serif;
 }
+
+#re {
+  width: 20%;
+}
