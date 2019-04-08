@@ -2,15 +2,17 @@ var clicks = 0;
 $('#submit')[0].addEventListener('click', function() {
   if (clicks < 1) {
     clicks++;
-    var re = $('#re')[0].value.replace(/ /g, '').split(','); // Laver et array, re, som står for raw entries.
+    var re = $('#re')[0].value.replace(/,/g, '.').split(' '); // Laver et array, re, som står for raw entries.
     var ec = [...new Set(re)].sort(function(a, b){return a-b}); // Laver et array, ec,  som står for entry categories.
 
-    var fec = [];
-    for (var i = ec[0]; i < parseFloat(ec[ec.length - 1]) + 1; i++) {
-      fec.push(i.toString());
-    }
+    if (!$('#dontfill')[0].checked) {
+      var fec = [];
+      for (var i = ec[0]; i < parseFloat(ec[ec.length - 1]) + 1; i++) {
+        fec.push(i);
+      }
 
-    ec = fec;
+      ec = fec;
+    }
 
     function getOccs(value) {
       var count = 0;
@@ -20,7 +22,7 @@ $('#submit')[0].addEventListener('click', function() {
 
     for (var i = 0; i < ec.length; i++) {
       $('table').append('<tr>' +
-      '<td>' + ec[i] + '</td>' +
+      '<td>' + ec[i].toString().replace('.', ',') + '</td>' +
       '<td>' + getOccs(ec[i]) + '</td>' +
       '<td>' + (getOccs(ec[i]) / re.length * 100).toString().replace('.', ',') + '%</td>' +
       '</tr>');
@@ -78,8 +80,10 @@ $('#submit')[0].addEventListener('click', function() {
     '<td>' + xht.toString().replace('.', ',') + '</td>' +
     '</tr>');
 
-    $('#avg')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
-
+    $('#midl')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
+    $('#mindst')[0].innerHTML += '<b>' + ec[0].toString().replace('.', ',') + '</b>';
+    $('#largest')[0].innerHTML += '<b>' + ec[ec.length - 1].toString().replace('.', ',') + '</b>';
+    $('#vari')[0].innerHTML += '<b>' + (ec[ec.length - 1] - ec[0]).toString().replace('.', ',') + '</b>';
 
   }
 });
