@@ -8,7 +8,7 @@ $('#submit')[0].addEventListener('click', function() {
     
     if (!$('#dontfill')[0].checked) {
       for (var i = ec[0]; i < parseFloat(ec[ec.length - 1]) + 1; i++) {
-        fec.push(i);
+        fec.push(i.toString());
       }
 
       ec = fec;
