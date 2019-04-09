@@ -4,9 +4,9 @@ $('#submit')[0].addEventListener('click', function() {
     clicks++;
     var re = $('#re')[0].value.replace(/,/g, '.').split(' '); // Laver et array, re, som står for raw entries.
     var ec = [...new Set(re)].sort(function(a, b){return a-b}); // Laver et array, ec,  som står for entry categories.
-
+    var fec = [];
+    
     if (!$('#dontfill')[0].checked) {
-      var fec = [];
       for (var i = ec[0]; i < parseFloat(ec[ec.length - 1]) + 1; i++) {
         fec.push(i);
       }
