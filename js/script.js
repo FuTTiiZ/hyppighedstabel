@@ -1,11 +1,12 @@
 var clicks = 0;
 function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1) {
+  console.clear();
   if (clicks < 1) {
     clicks++;
   } else {
     for (var i = 0; i < $('tbody').children().length - 1; i++) {
       $('tbody')[0].innerHTML = '<tr id="head"> <th>x</th> <th>h(x)</th> <th>f(x)</th> <th>H(x)</th> <th>F(x)</th> <th>x⋅h(x)</th> </tr>';
-      $('div')[3].innerHTML = '</br> <p id="mindst"> Mindsteværdi: </p> <p id="largest"> Størsteværdi: </p> <p id="vari"> Variationsbredden: </p> <p id="midl"> Middeltal: </p> <p id="typet"> Typetal: </p>';
+      $('div')[3].innerHTML = '</br> <p id="mindst"> Mindsteværdi: </p> <p id="largest"> Størsteværdi: </p> <p id="vari"> Variationsbredden: </p> <p id="midl"> Middeltal: </p> <p id="typet"> Typetal: </p> <p id="kvartilsaet"> Kvartilsæt: </p>';
     }
   }
   var re = $('#re')[0].value.replace(/,/g, '.').split(' '); // Laver et array, re, som står for raw entries.
@@ -121,6 +122,29 @@ function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1
       }
   });
 
+  var kvartilset = '';
+  for (var i = 0; i <$('tbody').children().length - 1; i++) {
+    if (parseFloat($('tbody').children()[i + 1].children[4].innerHTML.replace('%', '').replace(',', '.')) >= 25) {
+      kvartilset += $('tbody').children()[i + 1].children[0].innerHTML;
+      break;
+    }
+  }
+  kvartilset += ', ';
+  for (var i = 0; i <$('tbody').children().length - 1; i++) {
+    if (parseFloat($('tbody').children()[i + 1].children[4].innerHTML.replace('%', '').replace(',', '.')) >= 50) {
+      kvartilset += $('tbody').children()[i + 1].children[0].innerHTML;
+      break;
+    }
+  }
+  kvartilset += ' og ';
+  for (var i = 0; i <$('tbody').children().length - 1; i++) {
+    if (parseFloat($('tbody').children()[i + 1].children[4].innerHTML.replace('%', '').replace(',', '.')) >= 75) {
+      kvartilset += $('tbody').children()[i + 1].children[0].innerHTML;
+      break;
+    }
+  }
+  console.log(kvartilset);
+
   //Middeltal
   $('#midl')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
   //Mindsteværdi
@@ -135,14 +159,18 @@ function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1
     for (var i = 0; i < typet.length; i++) {
       if (i === typet.length - 1) {
         typetf += typet[i].toString().replace('.', ',');
-      } else {
+      } else if (i === typet.length - 2) {
         typetf += typet[i].toString().replace('.', ',') + ' og ';
+      } else {
+        typetf += typet[i].toString().replace('.', ',') + ', ';
       }
     }
     $('#typet')[0].innerHTML += '<b>' + typetf + '</b>';
   } else {
     $('#typet')[0].innerHTML += '<b>' + typet[0].toString().replace('.', ',') + '</b>';
   }
+  //Kvartilsæt
+  $('#kvartilsaet')[0].innerHTML += '<b>' + kvartilset + '</b>';
 
 } else {alert('Du skal skrive mindst to tal.');}}
 
