@@ -104,22 +104,32 @@ function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1
   '<td>' + xht.toString().replace('.', ',') + '</td>' +
   '</tr>');
 
-  var typeti = {};
-  var typet = [];
-  var max = 0;
-  for (var i = 0; i < ec.length; i++) {
-    typeti[ec[i]] = getOccs(ec[i], re);
-    if (getOccs(ec[i], re) >= max) {
-      max = getOccs(ec[i], re);
-      typet.push(ec[i]);
-    }
-  }
-  console.log(typet);
+  var store = re,
+      distribution = {},
+      max = 0,
+      typet = [];
 
+  store.forEach(function (a) {
+      distribution[a] = (distribution[a] || 0) + 1;
+      if (distribution[a] > max) {
+          max = distribution[a];
+          typet = [a];
+          return;
+      }
+      if (distribution[a] === max) {
+          typet.push(a);
+      }
+  });
+
+  //Middeltal
   $('#midl')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
+  //Mindsteværdi
   $('#mindst')[0].innerHTML += '<b>' + ec[0].toString().replace('.', ',') + '</b>';
+  //Størsteværdi
   $('#largest')[0].innerHTML += '<b>' + ec[ec.length - 1].toString().replace('.', ',') + '</b>';
+  //Variationsbredden
   $('#vari')[0].innerHTML += '<b>' + (ec[ec.length - 1] - ec[0]).toString().replace('.', ',') + '</b>';
+  //Typetal
   if (typet.length > 1) {
     var typetf = '';
     for (var i = 0; i < typet.length; i++) {
