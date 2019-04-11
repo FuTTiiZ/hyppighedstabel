@@ -5,7 +5,7 @@ function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1
   } else {
     for (var i = 0; i < $('tbody').children().length - 1; i++) {
       $('tbody')[0].innerHTML = '<tr id="head"> <th>x</th> <th>h(x)</th> <th>f(x)</th> <th>H(x)</th> <th>F(x)</th> <th>x⋅h(x)</th> </tr>';
-      $('div')[3].innerHTML = '<div> </br> <p id="mindst"> Mindsteværdi: </p> <p id="largest"> Størsteværdi: </p> <p id="vari"> Variationsbredden: </p> <p id="midl"> Middeltal: </p> </div>';
+      $('div')[3].innerHTML = '</br> <p id="mindst"> Mindsteværdi: </p> <p id="largest"> Størsteværdi: </p> <p id="vari"> Variationsbredden: </p> <p id="midl"> Middeltal: </p> <p id="typet"> Typetal: </p>';
     }
   }
   var re = $('#re')[0].value.replace(/,/g, '.').split(' '); // Laver et array, re, som står for raw entries.
@@ -103,16 +103,37 @@ function calc() { if ($('#re')[0].value.replace(/,/g, '.').split(' ').length > 1
   '<td></td>' +
   '<td>' + xht.toString().replace('.', ',') + '</td>' +
   '</tr>');
-/*
-  var typet = 0;
-  for (var i = 1; i < $('tbody').children().length - 1; i++) {
 
-  }*/
+  var typeti = {};
+  var typet = [];
+  var max = 0;
+  for (var i = 0; i < ec.length; i++) {
+    typeti[ec[i]] = getOccs(ec[i], re);
+    if (getOccs(ec[i], re) >= max) {
+      max = getOccs(ec[i], re);
+      typet.push(ec[i]);
+    }
+  }
+  console.log(typet);
 
   $('#midl')[0].innerHTML += '<b>' + (xht / re.length).toString().replace('.', ',') + '</b>';
   $('#mindst')[0].innerHTML += '<b>' + ec[0].toString().replace('.', ',') + '</b>';
   $('#largest')[0].innerHTML += '<b>' + ec[ec.length - 1].toString().replace('.', ',') + '</b>';
   $('#vari')[0].innerHTML += '<b>' + (ec[ec.length - 1] - ec[0]).toString().replace('.', ',') + '</b>';
+  if (typet.length > 1) {
+    var typetf = '';
+    for (var i = 0; i < typet.length; i++) {
+      if (i === typet.length - 1) {
+        typetf += typet[i].toString().replace('.', ',');
+      } else {
+        typetf += typet[i].toString().replace('.', ',') + ' og ';
+      }
+    }
+    $('#typet')[0].innerHTML += '<b>' + typetf + '</b>';
+  } else {
+    $('#typet')[0].innerHTML += '<b>' + typet[0].toString().replace('.', ',') + '</b>';
+  }
+
 } else {alert('Du skal skrive mindst to tal.');}}
 
 $('#submit')[0].addEventListener('click', calc);
