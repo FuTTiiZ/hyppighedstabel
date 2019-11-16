@@ -121,12 +121,22 @@ function f(val, kvartVar) {
 
 function insertObs() {
   nObs = [];
+  let oObs = {};
   for (let i = 0; i < rObs.length; i++) {
     if (pObs.indexOf(rObs[i]) === -1) {
-      isFloat(rObs[i]) ? pObs.push(pretty(rObs[i])) : pObs.push(rObs[i]);
+      //isFloat(rObs[i]) ? pObs.push(pretty(rObs[i])) : pObs.push(rObs[i]);
       nObs.push(parseFloat(rObs[i].replace(',', '.')));
+      oObs[parseFloat(rObs[i].replace(',', '.')).toString()] = isFloat(rObs[i]) ? pretty(rObs[i]) : rObs[i];
     }
   }
+
+  nObs.sort(function(a, b){return a-b});
+
+  pObs = []
+  for (v of nObs) {
+    isFloat(oObs[v.toString()]) ? pObs.push(pretty(oObs[v.toString()])) : pObs.push(oObs[v.toString()]);
+  }
+
   if (fill && pObs.length > 1) {
     let tpObs = [pObs[0]];
     let tnObs = [nObs[0]];
@@ -135,7 +145,12 @@ function insertObs() {
     let curr = nObs[0];
     for (let i = 0; curr < nObs[nObs.length - 1] - interval; i++) {
       curr += interval;
-      isFloat(curr) ? tpObs.push(pretty(curr)) : tpObs.push(curr.toString());
+      if (oObs[curr]) {
+        tpObs.push(oObs[curr]);
+      } else {
+        isFloat(curr) ? tpObs.push(pretty(curr)) : tpObs.push(curr.toString());
+      }
+
       tnObs.push(parseFloat(curr.toString().replace(',', '.')));
 
       if (!(curr < nObs[nObs.length - 1] - interval) && (curr + interval > nObs[nObs.length - 1])) {
@@ -154,7 +169,7 @@ function insertObs() {
     for (v of pObs) {
       if (tpObs.indexOf(v) === -1) {
         //alert(v + ' = ' + )
-        alert('Dit interval går ikke op i dine observationer!');
+        alert('Dit interval går ikke op i dine observationer! 2');
         proceed = false;
         tpObs = [pObs[0]];
         tnObs = [nObs[0]];
@@ -169,8 +184,6 @@ function insertObs() {
   for (let i = 0; i < nObs.length; i++) {
     totalH += h(pObs[i], rObs);
   }
-
-  nObs.sort(function(a, b){return a-b});
 
   for (let i = 0; i < pObs.length; i++) {
     pObs[i] = pObs[i].replace(',00', '');
