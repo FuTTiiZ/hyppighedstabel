@@ -133,7 +133,7 @@ function insertObs() {
   nObs.sort(function(a, b){return a-b});
 
   pObs = []
-  for (v of nObs) {
+  for (let v of nObs) {
     isFloat(oObs[v.toString()]) ? pObs.push(pretty(oObs[v.toString()])) : pObs.push(oObs[v.toString()]);
   }
 
@@ -166,7 +166,7 @@ function insertObs() {
     tpObs.push(pObs[pObs.length - 1]);
     tnObs.push(nObs[nObs.length - 1]);
 
-    for (v of pObs) {
+    for (let v of pObs) {
       if (tpObs.indexOf(v) === -1) {
         //alert(v + ' = ' + )
         alert('Dit interval går ikke op i dine observationer! 2');
